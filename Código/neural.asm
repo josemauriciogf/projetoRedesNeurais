@@ -23,14 +23,19 @@
 	lwc1 $f8,myFloat6
 	lwc1 $f9,myFloat1
 	#testar os dados{
-	
-    for:slt , , 	#5 pq vai passar pelas 5 linhas
-	beq , ,   #se for <6 para
-	mul.s $f4,$f1,$f5       #multiplica peso1 x i
-	mul.s $f4,$f2,$f5	#multiplica peso2 x i
-	
- fimFor:	
-	#linha 0 - 1 x peso1+1 x peso2 = X     (x minusco = multi / X = variavel)
-	#2 (resutlado de 1+1)-X=erro
-	#atualizar o peso - pesox = pesox+erro x taxaAprendizado x 1(entrada linha0)}
-	#repetir tudo
+	addi $t0,$t0,1
+	addi $t1,$t1,6
+    for:slt $t3,$t0,$t1        #5 pq vai passar pelas 5 linhas
+	beq $t0,0,fimFor       #se for <6 para
+	mul.s $f4,$f1,$f9      #multiplica peso1 x i f9=i
+	mul.s $f5,$f2,$f9      #multiplica peso2 x i	
+	add.s $f4,$f4,$f5      #soma o resultado de peso i por 1 e peso 2 por i
+	sub.s $f4,$f4,$f3      #tira o resultado da soma acima de i+i pra ter o erro
+	#pensei em printar o erro aqui nesse ponto
+	add.s $f1,$f1,$f4      #começo do calculo do novo erro (peso1 = peso1+erro)
+	mul.s $f0,$f0,$f9      #taxaAprendizado x i
+	mul.s $f1,$f1,$f0      #calculo do novo peso 1 pronto
+	add.s $f2,$f2,$f4      #começo do calculo do novo erro (peso2 = peso2+erro)
+	mul.s $f2,$f2,$f0      #calculo do novo peso 2 pronto
+	#ja temos os novos peso 1 e 2 para repetir o processo
+ fimFor:#repetir tudo
