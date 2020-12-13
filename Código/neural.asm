@@ -15,6 +15,7 @@
 	mensagemPeso1: .asciiz "\nPeso1: " 
 	mensagemPeso2: .asciiz "\nPeso2: " 
 	erroMensagem: .asciiz "\nErro:"
+	erroMensagem2: .asciiz "\nO erro final foi:"
 .text
 main:
 	#load tx de aprendizado = 0.05
@@ -29,7 +30,7 @@ main:
 	lwc1 $f8,myFloat6
 	lwc1 $f9,myFloat1
 	lwc1 $f10,myFloat1 #pra ser o i
-	
+	lwc1 $f20,zeroAsFloat
 	
 	addi $t0,$t0,1 #criar o i
 	addi $t1,$t1,6 #criar o limite de i
@@ -40,7 +41,7 @@ main:
 	mul.s $f4,$f1,$f9      #multiplica peso1 x i f9=i
 	mul.s $f5,$f2,$f9      #multiplica peso2 x i	
 	add.s $f4,$f4,$f5      #soma o resultado de peso i por 1 e peso 2 por i
-	sub.s $f4,$f4,$f3      #tira o resultado da soma acima de i+i pra ter o erro
+	sub.s $f4,$f3,$f4      #tira o resultado da soma acima de i+i pra ter o erro
 	
 	#printar erro
 	li $v0, 4 
@@ -49,13 +50,15 @@ main:
 	li   $v0, 2
 	mov.s $f12,$f4
 	syscall
-	
-	add.s $f1,$f1,$f4      #começo do calculo do novo erro (peso1 = peso1+erro)
-	mul.s $f0,$f0,$f9      #taxaAprendizado x i
-	mul.s $f1,$f1,$f0      #calculo do novo peso 1 pronto
-	add.s $f2,$f2,$f4      #começo do calculo do novo erro (peso2 = peso2+erro)
-	mul.s $f2,$f2,$f0      #calculo do novo peso 2 pronto
-	
+	#pesox=pesox+(erro x taxa x entrada) 
+	#peso1
+	mul.s $f12,$f4,$f0
+	mul.s $f12,$f12,$f9
+	add.s $f1,$f1,$f12 #novo peso1
+	#peso2
+	mul.s $f13,$f4,$f0
+	mul.s $f13,$f13,$f9
+	add.s $f2,$f2,$f13 #novo peso1
 	#imprimir os peso 1 e 2 atualizados
 	li $v0, 4 
 	la $a0, mensagemPeso1
@@ -75,4 +78,11 @@ main:
 	add.s $f9,$f9,$f10 #i++ no float
 	j for
 	#repetir tudo
- fimFor:jr $ra
+ fimFor:#printar erro final
+	li $v0, 4 
+	la $a0, erroMensagem2
+	syscall
+	li   $v0, 2
+	mov.s $f12,$f4
+	syscall
+ 	jr $ra
