@@ -16,17 +16,15 @@
 	mensagemPeso2: .asciiz "\nPeso2: " 
 	erroMensagem: .asciiz "\nErro:"
 	erroMensagem2: .asciiz "\nO erro final foi:"
+	Mensagem3: .asciiz "\nCom esse erro, 1+1=:"
 .text
 main:
 	#load tx de aprendizado = 0.05
 	lwc1 $f0,taxaAprendizado
-	
-	#salvar peso1 e peso2
 	lwc1 $f1,peso1
 	lwc1 $f2,peso2
-	
-	#saida esperada na primeira linha
 	lwc1 $f3,myFloat2
+	lwc1 $f16,myFloat2
 	lwc1 $f8,myFloat6
 	lwc1 $f9,myFloat1
 	lwc1 $f10,myFloat1 #pra ser o i
@@ -76,6 +74,7 @@ main:
 	#ja temos os novos peso 1 e 2 para repetir o processo
 	addi $t0,$t0,1 #i++
 	add.s $f9,$f9,$f10 #i++ no float
+	add.s $f3,$f3,$f16 #adicionar 2 no resultado final
 	j for
 	#repetir tudo
  fimFor:#printar erro final
@@ -85,4 +84,16 @@ main:
 	li   $v0, 2
 	mov.s $f12,$f4
 	syscall
+	add.s $f18,$f18,$f20
+	add.s $f19,$f19,$f20
+	mul.s $f18,$f10,$f1
+	mul.s $f19,$f10,$f2
+	add.s $f19,$f19,$f18
+	li $v0, 4 
+	la $a0, Mensagem3
+	syscall
+	li   $v0, 2
+	mov.s $f12,$f19
+	syscall
  	jr $ra
+	
