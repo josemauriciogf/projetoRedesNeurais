@@ -16,7 +16,7 @@
 	mensagemPeso2: .asciiz "\nPeso2: " 
 	erroMensagem: .asciiz "\n\nErro:"
 	erroMensagem2: .asciiz "\n\nO erro final foi:"
-	Mensagem3: .asciiz "\n\nCom esse erro, 1+1=:"
+	Mensagem3: .asciiz "\n\nCom esses pesos atualizados, 1+1=:"
 .text
 main:
 	#load tx de aprendizado = 0.05
