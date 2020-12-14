@@ -1,4 +1,5 @@
 .data
+	#salvar variaveis que vão ser utilizadas
 	myFloat1: .float 1.00
 	myFloat2: .float 2.00
 	myFloat3: .float 3.00
@@ -11,23 +12,24 @@
 	peso2: .float 0.80
 	zeroAsFloat: .float 0.00
 	taxaAprendizado: .float 0.05
-	erro1: .float 1.20
 	mensagemPeso1: .asciiz "\nPeso1: " 
 	mensagemPeso2: .asciiz "\nPeso2: " 
-	erroMensagem: .asciiz "\nErro:"
-	erroMensagem2: .asciiz "\nO erro final foi:"
-	Mensagem3: .asciiz "\nCom esse erro, 1+1=:"
+	erroMensagem: .asciiz "\n\nErro:"
+	erroMensagem2: .asciiz "\n\nO erro final foi:"
+	Mensagem3: .asciiz "\n\nCom esse erro, 1+1=:"
 .text
 main:
 	#load tx de aprendizado = 0.05
 	lwc1 $f0,taxaAprendizado
+	#load peso 1 e 2
 	lwc1 $f1,peso1
 	lwc1 $f2,peso2
+	#load floats uteis
 	lwc1 $f3,myFloat2
 	lwc1 $f16,myFloat2
 	lwc1 $f8,myFloat6
 	lwc1 $f9,myFloat1
-	lwc1 $f10,myFloat1 #pra ser o i
+	lwc1 $f10,myFloat1 
 	lwc1 $f20,zeroAsFloat
 	
 	addi $t0,$t0,1 #criar o i
